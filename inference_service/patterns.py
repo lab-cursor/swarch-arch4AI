@@ -18,28 +18,10 @@ async def cascade(text, small, large, threshold):
     Return the small model's prediction if its confidence >= threshold,
     otherwise return the large model's prediction.
     """
-    # TODO (Task 2): about 4 lines. Delete the raise line below when you start.
-    #
-    # Step 1. Ask the small model and keep its answer in a variable.
-    #   small.predict() is a normal function: call it without await.
-    #
-    # Step 2. Decide. Read the answer's confidence (a Prediction is a dict,
-    #   so use ["confidence"]) and compare it with threshold. Confidence
-    #   *equal* to the threshold counts as confident.
-    #     - Confident: return the small model's answer, and stop there.
-    #       Do not call the large model "just to compare": every large call
-    #       costs money, and the tests check that it is not called.
-    #     - Not confident: escalate to the large model.
-    #
-    # Step 3. Escalate. large.predict() is a coroutine (async def), so call it
-    #   with await. Without await you get a coroutine object, not a Prediction.
-    #   Return its answer as it is: the "model" field tells the load test
-    #   which model answered.
-    #
-    # Check: python -m pytest tests/test_task2_cascade.py -v
-    #   (confident -> "small" and 0 large calls; unsure -> "large";
-    #    confidence == threshold -> "small"; threshold 1.0 -> always "large")
-    raise NotImplementedError("Task 2: implement cascade() in inference_service/patterns.py")
+    answer = small.predict(text)
+    if answer["confidence"] >= threshold:
+        return answer
+    return await large.predict(text)
 
 
 # ---------------------------------------------------------------- Task 3
