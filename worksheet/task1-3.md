@@ -1,8 +1,8 @@
 # Tutorial 6 worksheet: serving patterns
 
-**Name / ชื่อ:**
+**Name / ชื่อ:** นันทภัทร์ จั่นสนิท
 
-**Student ID / รหัสนิสิต:**
+**Student ID / รหัสนิสิต:** 6970148821
 
 This is **individual work**: each student completes and submits their own copy, in their own fork.
 
@@ -16,27 +16,27 @@ Copy result rows from `results/runs.csv` (or the load test's output) into the ta
 
 | Run | p50 ms | p95 ms | accuracy | large calls |
 |---|---|---|---|---|
-| t0-large | | | | |
-| t0-small | | | | |
+| t0-large | 501 | 598 | 93.5% | 100% |
+| t0-small | 28 | 68 | 72.5% | 0% |
 
 **Q0.** What does the large model buy, and what does it cost?
 
 *large model ให้อะไรเพิ่ม และต้องแลกด้วยอะไร*
 
->
+> large ให้ accuracy เพิ่ม แต่ก็แลกกับ latency ที่เพิ่มขึ้น
 
 ## Task 1: Fallback prediction (copy the Task 1 results from `results/runs.csv` here / copy ผลลัพธ์ของ Task 1 จาก `results/runs.csv` มาวางที่นี่)
 
 | Run | run time (s) | p50 ms | p95 ms | errors | pending | accuracy |
 |---|---|---|---|---|---|---|
-| t1-before | | | | | | |
-| t1-after | | | | | | |
+| t1-before | 26.2 | 275 | 455 | 17 | 0 | 92.9% |
+| t1-after | 9.6 | 388 | 1011 | 0 | 26 | 92.5% |
 
 **Q1.1** In `t1-before`, p50 can look *better* than the baseline. Why is p50 misleading here? Which column tells the real story?
 
 *ใน `t1-before` ค่า p50 อาจดู "ดีกว่า" baseline ทำไม p50 จึงทำให้เข้าใจผิดในกรณีนี้ และ column ไหนบอกความจริง*
 
->
+> เพราะ กรณีนี้คือ case ส่วนใหญ่ ไม่ใช่ case ที่ผิด เราต้องการ จับ case ที่ผิด ดังนั้น จึงต้องดู p95 เป็นหลัก
 
 **Q1.2** The hang affects only 10% of large-model calls. Why is it worse for the system than 10% of reviews being slow? Think about what a waiting request holds on to in the review service and the gateway.
 
@@ -60,10 +60,10 @@ Copy result rows from `results/runs.csv` (or the load test's output) into the ta
 
 | Run | threshold | p50 ms | p95 ms | accuracy | large calls |
 |---|---|---|---|---|---|
-| t2-0.6 | 0.6 | | | | |
-| t2-0.7 | 0.7 | | | | |
-| t2-0.8 | 0.8 | | | | |
-| t2-0.9 | 0.9 | | | | |
+| t2-0.6 | 0.6 | 11 | 524 | 91.5% | 38% |
+| t2-0.7 | 0.7 | 382 | 572 | 93.0% | 53% |
+| t2-0.8 | 0.8 | 446 | 572 | 93.5% | 64% |
+| t2-0.9 | 0.9 | 481 | 594 | 93.5% | 77% |
 
 **Q2.1** Which threshold would you deploy for CampusEats, and why? Name the quality you give up.
 
@@ -87,7 +87,7 @@ Copy result rows from `results/runs.csv` (or the load test's output) into the ta
 
 | Run | p50 ms | p95 ms | accuracy | large calls | cache hits |
 |---|---|---|---|---|---|
-| t3-cache | | | | | |
+| t3-cache | 10 | 536 | 93.0% | 38% | 35% |
 
 **Q3.1** Which reviews benefit from the cache, and which never will?
 
